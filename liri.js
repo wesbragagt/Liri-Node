@@ -11,16 +11,29 @@ var spotify = new spotify(keys.spotify);
 // using bands in town API
 
 var artist = process.argv[3];
-
-var queryURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
+var bandURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
 
 if(process.argv[2] === "concert-this"){
     
-    axios.get(queryURL).then(function(response){
+    axios.get(bandURL).then(function(response){
         console.log(response.data[0]);
         
     });
-}
+};
+
+// using the omdb movies
+var movie = process.argv[3];
+var omdbURL = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
+
+if(process.argv[2] === "movie-this"){
+
+    axios.get(omdbURL).then(function(response){
+        console.log(response.data);
+        
+    });
+};
+
+// need to figure out how to get data from the spotify api
 
 
 
