@@ -2,76 +2,81 @@ require("dotenv").config();
 var moment = require("moment");
 var axios = require("axios");
 
-
-
-
-
-
 // using bands in town API
 
 var artist = process.argv[3];
-var bandURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
+var bandURL =
+    "https://rest.bandsintown.com/artists/" +
+    artist +
+    "/events?app_id=codingbootcamp";
 
-if(process.argv[2] === "concert-this"){
-    
-    axios.get(bandURL).then(function(response){
+if (process.argv[2] === "concert-this") {
+    axios.get(bandURL).then(function(response) {
         var venueName = response.data[0].venue.name;
-        var venueLocation = response.data[0].venue.city + ", " + response.data[0].venue.country;
+        var venueLocation =
+            response.data[0].venue.city + ", " + response.data[0].venue.country;
         var dateEvent = moment(response.data[0].datetime).format("MM/DD/YYYY");
         console.log(artist);
-        console.log( "At" + " " + venueName);
+        console.log("At" + " " + venueName);
         console.log(venueLocation);
         console.log(dateEvent);
-        
-        
-        
     });
-};
+}
 
 // using the omdb movies
 var movie = process.argv[3];
-var omdbURL = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
+var omdbURL =
+    "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
 
-if(process.argv[2] === "movie-this"){
-
-    axios.get(omdbURL).then(function(response){        
+if (process.argv[2] === "movie-this") {
+    axios.get(omdbURL).then(function(response) {
         console.log(response.data.Title);
         console.log("Released in: " + response.data.Year);
-        console.log("IMDB Rating:"+ " " + response.data.imdbRating);
+        console.log("IMDB Rating:" + " " + response.data.imdbRating);
         console.log("Rotten Tomatoes: " + response.data.Ratings[1].Value);
         console.log("Country: " + response.data.Country);
         console.log("Language: " + response.data.Language);
         console.log("Plot: " + response.data.Plot);
-        console.log("Actors: " + response.data.Actors);    
+        console.log("Actors: " + response.data.Actors);
     });
-};
+}
 
 // NODE SPOTIFY API
 // spotify api access credentials
 var keys = require("./keys.js");
-var Spotify = require('node-spotify-api');
- 
+var Spotify = require("node-spotify-api");
+
 var spotify = new Spotify(keys.spotify);
 var songName = process.argv[3];
 
-if(process.argv[2] === "spotify-this-song"){
+if (process.argv[2] === "spotify-this-song") {
     spotify
-    .search({ type: 'track', query: songName })
-    .then(function(response) {
-      console.log("Artist/Band: " + response.tracks.items[0].artists[0].name);
-      console.log("Artist/Band: " + response.tracks.items[1].artists[0].name);
-      console.log("Artist/Band: " + response.tracks.items[2].artists[0].name);
+        .search({ type: "track", query: songName })
+        .then(function(response) {
+            // testing
 
-    // console.log(response.tracks.items[0]);
-    
-    })
-    .catch(function(err) {
-      console.log(err);
-    });
+            for (var i = 0; i < response.tracks.items.length; i++) {
+                console.log(
+                    "Artist/Band: " + response.tracks.items[i].artists[0].name
+                );
+                console.log("Track Name: " + response.tracks.items[i].name);
+                console.log("Album: " + response.tracks.items[i].album.name);
+
+                if (response.tracks.items[i].preview_url !== null) {
+                    console.log(
+                        "Preview Link: " + response.tracks.items[i].preview_url
+                    );
+                } else {
+                    console.log(
+                        "Album Link: " +
+                            response.tracks.items[1].external_urls.spotify
+                    );
+                }
+
+                console.log("-----------------------------------------------");
+            }
+        })
+        .catch(function(err) {
+            console.log(err);
+        });
 }
-
-
-
-
-
-
