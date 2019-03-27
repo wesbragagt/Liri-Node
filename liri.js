@@ -2,10 +2,8 @@ require("dotenv").config();
 var moment = require("moment");
 var axios = require("axios");
 
-// spotify api access credentials
-var spotify = require("node-spotify-api");
-var keys = require("./keys.js");
-var spotify = new spotify(keys.spotify);
+
+
 
 
 
@@ -48,11 +46,14 @@ if(process.argv[2] === "movie-this"){
     });
 };
 
-// need to figure out how to get data from the spotify api 
+// NODE SPOTIFY API
+// spotify api access credentials
+var keys = require("./keys.js");
+var Spotify = require('node-spotify-api');
+ 
+var spotify = new Spotify(keys.spotify);
 
-
-
-
+console.log(spotify);
 
 
 
