@@ -36,9 +36,15 @@ var omdbURL = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=tril
 
 if(process.argv[2] === "movie-this"){
 
-    axios.get(omdbURL).then(function(response){
-        console.log(response.data);
-        
+    axios.get(omdbURL).then(function(response){        
+        console.log(response.data.Title);
+        console.log("Released in: " + response.data.Year);
+        console.log("IMDB Rating:"+ " " + response.data.imdbRating);
+        console.log("Rotten Tomatoes: " + response.data.Ratings[1].Value);
+        console.log("Country: " + response.data.Country);
+        console.log("Language: " + response.data.Language);
+        console.log("Plot: " + response.data.Plot);
+        console.log("Actors: " + response.data.Actors);    
     });
 };
 
