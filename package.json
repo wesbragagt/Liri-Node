@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/wesbragagt/Liri-Node/issues"
   },
-  "homepage": "https://github.com/wesbragagt/Liri-Node#readme"
+  "homepage": "https://github.com/wesbragagt/Liri-Node#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "moment": "^2.24.0"
+  }
 }
