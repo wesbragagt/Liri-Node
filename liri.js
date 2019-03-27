@@ -52,8 +52,23 @@ var keys = require("./keys.js");
 var Spotify = require('node-spotify-api');
  
 var spotify = new Spotify(keys.spotify);
+var songName = process.argv[3];
 
-console.log(spotify);
+if(process.argv[2] === "spotify-this-song"){
+    spotify
+    .search({ type: 'track', query: songName })
+    .then(function(response) {
+      console.log("Artist/Band: " + response.tracks.items[0].artists[0].name);
+      console.log("Artist/Band: " + response.tracks.items[1].artists[0].name);
+      console.log("Artist/Band: " + response.tracks.items[2].artists[0].name);
+
+    // console.log(response.tracks.items[0]);
+    
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
+}
 
 
 
