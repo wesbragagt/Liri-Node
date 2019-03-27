@@ -1,4 +1,5 @@
 require("dotenv").config();
+var moment = require("moment");
 var axios = require("axios");
 
 // spotify api access credentials
@@ -16,7 +17,15 @@ var bandURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id
 if(process.argv[2] === "concert-this"){
     
     axios.get(bandURL).then(function(response){
-        console.log(response.data[0]);
+        var venueName = response.data[0].venue.name;
+        var venueLocation = response.data[0].venue.city + ", " + response.data[0].venue.country;
+        var dateEvent = moment(response.data[0].datetime).format("MM/DD/YYYY");
+        console.log(artist);
+        console.log( "At" + " " + venueName);
+        console.log(venueLocation);
+        console.log(dateEvent);
+        
+        
         
     });
 };
@@ -33,7 +42,7 @@ if(process.argv[2] === "movie-this"){
     });
 };
 
-// need to figure out how to get data from the spotify api
+// need to figure out how to get data from the spotify api 
 
 
 
