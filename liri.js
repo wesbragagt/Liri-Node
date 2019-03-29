@@ -48,6 +48,9 @@ if (process.argv[2] !== null && process.argv[3] !== null) {
                 findSpotify();
             });
             break;
+        case "clear-log":
+            clearSearch();
+            break;
     }
 }
 
@@ -168,5 +171,13 @@ function appendLog() {
     fs.appendFile("log.txt", logInfo, function(err) {
         if (err) throw err;
         console.log("appended to log.txt file");
+    });
+}
+
+// user can clear information logged in the log.txt file.
+function clearSearch() {
+    fs.writeFile("log.txt", "", function(err) {
+        if (err) throw err;
+        console.log("results cleared");
     });
 }
