@@ -1,18 +1,12 @@
+// instructions
+// console.log("commands available " + "\n" + "Get movie info: " + "movie-this" + "movie in between quotes");
+
 require("dotenv").config();
 var moment = require("moment");
 var axios = require("axios");
 
-// using bands in town API
-var artist = process.argv[3];
-var bandURL =
-    "https://rest.bandsintown.com/artists/" +
-    artist +
-    "/events?app_id=codingbootcamp";
-
-// using the omdb movies
-var movie = process.argv[3];
-var omdbURL =
-    "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
+var search = process.argv[2];
+var term = process.argv.splice(3).join(" ");
 
 // NODE SPOTIFY API
 // spotify api access credentials
@@ -20,14 +14,15 @@ var keys = require("./keys.js");
 var Spotify = require("node-spotify-api");
 
 var spotify = new Spotify(keys.spotify);
-var songName = process.argv[3];
+
+// log.txt file
 var logInfo;
 
 // File System
 var fs = require("fs");
 
-if (process.argv[2] !== null && process.argv[3] !== null) {
-    switch (process.argv[2]) {
+if (search !== null && search !== null) {
+    switch (search) {
         case "concert-this":
             concert();
             break;
@@ -44,7 +39,7 @@ if (process.argv[2] !== null && process.argv[3] !== null) {
                 }
 
                 var argCall = data.split(",");
-                songName = argCall[1];
+                term = argCall[1];
                 findSpotify();
             });
             break;
@@ -56,6 +51,11 @@ if (process.argv[2] !== null && process.argv[3] !== null) {
 
 //MY FUNCTIONS
 function concert() {
+    var artist = term;
+    var bandURL =
+        "https://rest.bandsintown.com/artists/" +
+        artist +
+        "/events?app_id=codingbootcamp";
     axios.get(bandURL).then(function(response) {
         var venueName = response.data[0].venue.name;
         var venueLocation =
@@ -84,6 +84,10 @@ function concert() {
 }
 
 function movieInfo() {
+    // using the omdb movies
+    var movie = term;
+    var omdbURL =
+        "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
     axios.get(omdbURL).then(function(response) {
         logInfo =
             "\n" +
@@ -122,7 +126,7 @@ function movieInfo() {
 
 function findSpotify() {
     spotify
-        .search({ type: "track", query: songName })
+        .search({ type: "track", query: term })
         .then(function(response) {
             // limit loop to the first 5 searches
             for (var i = 0; i < 5; i++) {
