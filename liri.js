@@ -1,5 +1,5 @@
 // instructions
-// console.log("commands available " + "\n" + "Get movie info: " + "movie-this" + "movie in between quotes");
+var instructions = require("./instructions");
 
 require("dotenv").config();
 var moment = require("moment");
@@ -21,7 +21,11 @@ var logInfo;
 // File System
 var fs = require("fs");
 
-if (search !== null && search !== null) {
+if (!search) {
+    console.log(instructions);
+}
+
+if (search !== null && term !== null) {
     switch (search) {
         case "concert-this":
             concert();
@@ -56,31 +60,43 @@ function concert() {
         "https://rest.bandsintown.com/artists/" +
         artist +
         "/events?app_id=codingbootcamp";
-    axios.get(bandURL).then(function(response) {
-        var venueName = response.data[0].venue.name;
-        var venueLocation =
-            response.data[0].venue.city + ", " + response.data[0].venue.country;
-        var dateEvent = moment(response.data[0].datetime).format("MM/DD/YYYY");
+    axios
+        .get(bandURL)
+        .then(function(response) {
+            var venueName = response.data[0].venue.name;
+            var venueLocation =
+                response.data[0].venue.city +
+                ", " +
+                response.data[0].venue.country;
+            var dateEvent = moment(response.data[0].datetime).format(
+                "MM/DD/YYYY"
+            );
+            var linkEvent = response.data[0].url;
 
-        logInfo =
-            "\n" +
-            "logged at " +
-            moment().format("hh:mm:ss a") +
-            "\n" +
-            artist +
-            "\n" +
-            "At " +
-            venueName +
-            "\n" +
-            "Location: " +
-            venueLocation +
-            "\n" +
-            "Date: " +
-            dateEvent +
-            "\n";
-        console.log("Information logged " + logInfo);
-        appendLog();
-    });
+            logInfo =
+                "\n" +
+                "logged at " +
+                moment().format("hh:mm:ss a") +
+                "\n" +
+                artist +
+                "\n" +
+                "At " +
+                venueName +
+                "\n" +
+                "Location: " +
+                venueLocation +
+                "\n" +
+                "Date: " +
+                dateEvent +
+                "\n" +
+                "Event Link : " +
+                linkEvent;
+            console.log("Information logged " + logInfo);
+            appendLog();
+        })
+        .catch(function() {
+            console.log("error, please provide a band/artist");
+        });
 }
 
 function movieInfo() {
